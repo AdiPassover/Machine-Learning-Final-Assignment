@@ -1,4 +1,4 @@
-from model import BaseClassificationModel
+from .model import BaseClassificationModel
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
@@ -11,8 +11,8 @@ class KNNModel(BaseClassificationModel):
 
 
 class SVMModel(BaseClassificationModel):
-    def __init__(self, kernel='linear', C=1.0, random_state=None):
-        super().__init__(SVC(kernel=kernel, C=C, random_state=random_state))
+    def __init__(self, kernel='linear', C=1.0, gamma='scale', random_state=None):
+        super().__init__(SVC(kernel=kernel, C=C, gamma=gamma, random_state=random_state))
 
 class RandomForestModel(BaseClassificationModel):
     def __init__(self, n_estimators=100, max_depth=None, random_state=None):

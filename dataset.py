@@ -23,8 +23,8 @@ class FSDDLoader:
                  feature_type="mfcc",     # "mfcc" or "mel"
                  n_mfcc=13,               # Number of MFCC coefficients
                  sample_rate=8000,        # Target sample rate (Hz)
-                 frame_length=0.025,      # Frame length in seconds
-                 frame_stride=0.010,      # Frame step in seconds
+                 frame_length=0.04,      # Frame length in seconds
+                 frame_stride=0.01,      # Frame step in seconds
                  max_duration=None,       # Crop/pad to this length in seconds
                  fixed_frames=None        # For 'flatten' or 'sequence': number of frames to pad/trim to
                  ):

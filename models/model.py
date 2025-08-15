@@ -40,3 +40,10 @@ class BaseClassificationModel:
 
     def load(self, path):
         self.model = joblib.load(path)
+
+    def train_and_evaluate(self, X_train, y_train, X_test, y_test, show_confusion=False):
+        self.train(X_train, y_train)
+
+        results = self.evaluate(X_test, y_test, show_confusion=show_confusion)
+        for metric, value in results.items():
+            print(f"{metric}: {value:.4f}")
