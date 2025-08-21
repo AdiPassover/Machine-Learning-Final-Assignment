@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import joblib
 
 
+SAVED_MODELS_PATH = "models/saved_models/"
+
 class BaseClassificationModel:
     def __init__(self, model):
         self.model = model
@@ -35,7 +37,7 @@ class BaseClassificationModel:
             'f1': f1
         }
 
-    def save(self, path):
+    def save(self, path=SAVED_MODELS_PATH):
         joblib.dump(self.model, path)
 
     def load(self, path):
