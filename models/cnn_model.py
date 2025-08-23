@@ -49,7 +49,7 @@ class CNNModel(BaseClassificationModel):
         )
         return model
 
-    def train(self, X_train, y_train, X_val=None, y_val=None):
+    def train(self, X_train, y_train, X_val=None, y_val=None, verbose=1):
         y_train = to_categorical(y_train, num_classes=self.num_classes)
         if X_val is not None:
             y_val = to_categorical(y_val, num_classes=self.num_classes)
@@ -59,16 +59,16 @@ class CNNModel(BaseClassificationModel):
                 batch_size=self.batch_size,
                 validation_data=(X_val, y_val),
                 callbacks=[EarlyStopping(monitor="val_loss", patience=3, restore_best_weights=True)],
-                verbose=1
+                verbose=verbose
             )
         else:
             self.model.fit(
                 X_train, y_train,
                 epochs=self.epochs,
                 batch_size=self.batch_size,
-                verbose=1
+                verbose=verbose
             )
 
-    def predict(self, X_test):
-        preds = self.model.predict(X_test)
+    def predict(self, X_test, verbose=0):
+        preds = self.model.predict(X_test, verbose=verbose)
         return np.argmax(preds, axis=1)
