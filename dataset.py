@@ -3,10 +3,15 @@ import numpy as np
 import librosa
 from enum import Enum, auto
 
+
+NUM_SPEAKERS = 6
+RECORDING_PER_DIGIT = 50
+
 class DataMode(Enum):
     AGGREGATE = auto()
     FLATTEN = auto()
     SEQUENCE = auto()
+    CNN = auto()
 
 
 class FSDDLoader:
@@ -140,10 +145,15 @@ class FSDDLoader:
                 feats_fixed = self._pad_or_trim_frames(feats)
                 X_processed.append(feats_fixed.T)
 
+            elif mode == DataMode.CNN:
+                feats_fixed = self._pad_or_trim_frames(feats)  # (F, T)
+                feats_fixed = np.expand_dims(feats_fixed, axis=-1)  # (F, T, 1)
+                X_processed.append(feats_fixed)
+
             else:
                 raise ValueError(f"Unsupported mode: {mode}")
 
-        if mode in (DataMode.AGGREGATE, DataMode.FLATTEN):
+        if mode in (DataMode.AGGREGATE, DataMode.FLATTEN, DataMode.CNN):
             X_processed = np.array(X_processed)
 
         return X_processed, self.labels, self.speakers

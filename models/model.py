@@ -38,8 +38,10 @@ class BaseClassificationModel:
     def save(self, path):
         joblib.dump(self.model, path)
 
-    def load(self, path):
-        self.model = joblib.load(path)
+    @classmethod
+    def load(cls, path):
+        model = joblib.load(path)
+        return cls(model=model)
 
     def train_and_evaluate(self, X_train, y_train, X_test, y_test, show_confusion=False):
         self.train(X_train, y_train)
