@@ -13,14 +13,9 @@ class BaseClassificationModel:
     def predict(self, X):
         return self.model.predict(X)
 
-    def evaluate(self, X, y, y_pred=None, show_confusion=False):
+    def evaluate(self, X, y, y_pred=None, show_confusion=False, accuracy_only=False):
         if y_pred is None:
             y_pred = self.predict(X)
-
-        precision = precision_score(y, y_pred, average='macro')
-        recall = recall_score(y, y_pred, average='macro')
-        f1 = f1_score(y, y_pred, average='macro')
-        acc = accuracy_score(y, y_pred)
 
         if show_confusion:
             cm = confusion_matrix(y, y_pred)
@@ -28,12 +23,15 @@ class BaseClassificationModel:
             disp.plot(cmap=plt.cm.Blues, xticks_rotation=45)
             plt.show()
 
-        return {
-            'accuracy': acc,
-            'precision': precision,
-            'recall': recall,
-            'f1': f1
-        }
+        metrics = {'accuracy': accuracy_score(y, y_pred)}
+        if not accuracy_only:
+            metrics.update({
+                'precision': precision_score(y, y_pred, average='weighted', zero_division=0),
+                'recall': recall_score(y, y_pred, average='weighted', zero_division=0),
+                'f1': f1_score(y, y_pred, average='weighted', zero_division=0)
+            })
+
+        return metrics
 
     def save(self, path):
         joblib.dump(self.model, path)
